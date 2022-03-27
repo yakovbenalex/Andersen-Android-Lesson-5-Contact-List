@@ -1,12 +1,16 @@
 package ru.opalevapps.andersenandroidlesson5contactlist
 
+import android.app.Activity
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
+
+private const val TAG = "FragmentContactList"
 
 class FragmentContactList : Fragment() {
     lateinit var lvContactList: ListView
@@ -43,7 +47,8 @@ class FragmentContactList : Fragment() {
                             FragmentContactDetails.newInstance(
                                 element.firstName,
                                 element.lastName,
-                                element.phone
+                                element.phone,
+                                id.toInt()
                             ),
                             FragmentContactDetails.FRAGMENT_CONTACT_DETAILS
                         )
@@ -52,6 +57,22 @@ class FragmentContactList : Fragment() {
                     }
                 }
             }
+        }
+
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            REQUEST_KEY,
+            this
+        ) { key, bundle ->
+            val firstName = bundle.getString(FragmentContactDetails.DATA_FIRST_NAME)
+            val lastName = bundle.getString(FragmentContactDetails.DATA_LAST_NAME)
+            val phone = bundle.getString(FragmentContactDetails.DATA_PHONE)
+            val idRecord = bundle.getInt(FragmentContactDetails.DATA_ID_RECORD)
+
+            contactArrayList[idRecord].firstName = firstName!!
+            contactArrayList[idRecord].lastName = lastName!!
+            contactArrayList[idRecord].phone = phone!!
+
+            lvContactList.deferNotifyDataSetChanged()
         }
 
         // Inflate the layout for this fragment

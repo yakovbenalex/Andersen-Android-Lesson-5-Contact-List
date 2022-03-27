@@ -3,7 +3,6 @@ package ru.opalevapps.andersenandroidlesson5contactlist
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -12,7 +11,6 @@ class MainActivity : AppCompatActivity() {
         if (supportFragmentManager.findFragmentByTag(FragmentContactList.FRAGMENT_CONTACT_LIST) == null) {
             supportFragmentManager.beginTransaction().run {
                 replace(R.id.fragment_container, FragmentContactList.newInstance(), FragmentContactList.FRAGMENT_CONTACT_LIST)
-                addToBackStack(FragmentContactList.FRAGMENT_CONTACT_LIST)
                 commit()
             }
         }
